@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2027 U12 沖繩國際軟式棒球錦標賽｜賽事資訊</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pitch:#0B1D33;
+    --pitch-deep:#071322;
+    --chalk:#F5F7FA;
+    --amber:#FFB627;
+    --turf:#1F9D5C;
+    --steel:#22344A;
+    --steel-line:#324a63;
+    --muted:#93A4B8;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--pitch);
+    color:var(--chalk);
+    font-family:'Inter',sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Barlow Condensed',sans-serif;
+    text-transform:uppercase;
+    letter-spacing:0.02em;
+  }
+  .mono{ font-family:'IBM Plex Mono',monospace; }
+  a{color:inherit;}
+  img,svg{display:block; max-width:100%;}
+  .wrap{ max-width:900px; margin:0 auto; padding:0 20px; }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(7,19,34,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--steel-line);
+  }
+  nav .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    flex-wrap:wrap; gap:6px 16px;
+    min-height:56px; padding-top:8px; padding-bottom:8px;
+  }
+  .brand{ font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:20px; letter-spacing:0.03em; }
+  .brand span{ color:var(--amber); }
+  .brand-hero{
+    font-size:clamp(13px, 3.6vw, 20px);
+    line-height:1.15;
+    flex:1 1 auto;
+    min-width:0;
+  }
+  .navlinks{ display:flex; gap:20px; font-size:14px; font-weight:600; }
+  .navlinks a{ opacity:0.75; text-decoration:none; transition:opacity .2s; }
+  .navlinks a:hover{ opacity:1; color:var(--amber); }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:56px 0 32px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:"";
+    position:absolute; inset:0;
+    background:
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.035) 0px, rgba(255,255,255,0.035) 1px, transparent 1px, transparent 64px);
+    pointer-events:none;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:13px; font-weight:600; color:var(--amber);
+    letter-spacing:0.08em; text-transform:uppercase;
+    margin-bottom:14px;
+  }
+  .eyebrow::before{
+    content:""; width:7px; height:7px; border-radius:50%;
+    background:var(--amber); box-shadow:0 0 0 4px rgba(255,182,39,0.18);
+  }
+  .hero h1{
+    font-size:clamp(40px,9vw,64px);
+    font-weight:800; line-height:0.95; color:var(--chalk);
+  }
+  .hero h1 em{ font-style:normal; color:var(--amber); }
+  .hero p.lead{
+    margin-top:16px; max-width:520px; color:var(--muted);
+    font-size:16px;
+  }
+  .hero-meta{
+    display:flex; flex-wrap:wrap; gap:10px; margin-top:24px;
+  }
+  .pill{
+    border:1px solid var(--steel-line); background:var(--steel);
+    padding:7px 14px; border-radius:999px; font-size:13px; font-weight:600;
+    display:flex; align-items:center; gap:6px;
+  }
+
+  /* ---------- TICKER ---------- */
+  .ticker-shell{
+    margin-top:32px; border-top:1px solid var(--steel-line); border-bottom:1px solid var(--steel-line);
+    background:var(--pitch-deep);
+    overflow:hidden;
+    position:relative;
+  }
+  .ticker-shell::before, .ticker-shell::after{
+    content:""; position:absolute; top:0; bottom:0; width:48px; z-index:2;
+  }
+  .ticker-shell::before{ left:0; background:linear-gradient(90deg,var(--pitch-deep),transparent); }
+  .ticker-shell::after{ right:0; background:linear-gradient(-90deg,var(--pitch-deep),transparent); }
+  .ticker{
+    display:flex; gap:0; width:max-content;
+    animation:scroll 26s linear infinite;
+  }
+  .ticker-item{
+    display:flex; align-items:center; gap:10px;
+    padding:14px 28px;
+    border-right:1px solid var(--steel-line);
+    font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600;
+    color:var(--muted); white-space:nowrap;
+  }
+  .ticker-item .flag{ font-size:18px; }
+  .ticker-item b{ color:var(--chalk); font-weight:600; }
+  @keyframes scroll{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+  @media (prefers-reduced-motion: reduce){ .ticker{ animation:none; } }
+
+  /* ---------- SECTION SHARED ---------- */
+  section{ padding:56px 0; border-bottom:1px solid var(--steel-line); }
+  .sec-head{ margin-bottom:28px; }
+  .sec-num{
+    font-family:'IBM Plex Mono',monospace; color:var(--amber);
+    font-size:13px; font-weight:600; letter-spacing:0.08em;
+  }
+  .sec-head h2{
+    font-size:clamp(28px,5vw,40px); font-weight:700; color:var(--chalk); margin-top:6px;
+  }
+  .sec-head p{ color:var(--muted); margin-top:8px; max-width:560px; font-size:15px;}
+
+  /* ---------- OVERVIEW STATS ---------- */
+  .stats-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+    background:var(--steel-line); border:1px solid var(--steel-line);
+  }
+  .stat{ background:var(--pitch); padding:24px 18px; }
+  .stat .num{
+    font-family:'Barlow Condensed',sans-serif; font-weight:800;
+    font-size:clamp(32px,6vw,48px); color:var(--amber); line-height:1;
+  }
+  .stat .lab{ margin-top:6px; font-size:13px; color:var(--muted); font-weight:600; }
+  @media (max-width:560px){ .stats-grid{ grid-template-columns:1fr 1fr; } }
+
+  .countries{
+    margin-top:22px; display:flex; flex-wrap:wrap; gap:10px;
+  }
+  .country-chip{
+    display:flex; align-items:center; gap:8px;
+    background:var(--steel); border:1px solid var(--steel-line);
+    padding:8px 14px; border-radius:8px; font-size:14px; font-weight:600;
+  }
+  .country-chip .flag{ font-size:18px; }
+
+  /* ---------- FORMAT (bracket diagram) ---------- */
+  .format-note{
+    background:var(--steel); border:1px solid var(--steel-line); border-left:3px solid var(--amber);
+    padding:14px 16px; border-radius:6px; font-size:13.5px; color:var(--muted);
+    margin-bottom:28px;
+  }
+  .format-flow{
+    display:flex; flex-direction:column; gap:0;
+  }
+  .flow-stage{
+    display:grid; grid-template-columns:140px 1fr; gap:16px;
+    padding:18px 0; border-top:1px solid var(--steel-line);
+    align-items:start;
+  }
+  .flow-stage:first-child{ border-top:none; }
+  .flow-label{
+    font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:20px;
+    color:var(--chalk); padding-top:2px;
+  }
+  .flow-label small{ display:block; font-family:'Inter',sans-serif; font-weight:500; font-size:12px; color:var(--amber); text-transform:none; letter-spacing:0; margin-top:2px;}
+  .flow-desc{ color:var(--muted); font-size:14px; }
+  .exchange-rules{ list-style:disc; padding-left:20px; margin-top:8px; display:flex; flex-direction:column; gap:4px; }
+  .exchange-rules li{ color:var(--muted); font-size:14px; }
+  .groups-pending{
+    display:flex; align-items:flex-start; gap:12px; margin-top:14px;
+    background:var(--steel); border:1px dashed var(--steel-line); border-radius:10px;
+    padding:16px;
+  }
+  .pending-icon{ font-size:20px; line-height:1; margin-top:2px; }
+  .pending-title{ font-weight:700; color:var(--chalk); font-size:14.5px; margin-bottom:3px; }
+  .pending-desc{ color:var(--muted); font-size:13px; }
+
+  .advance-note{
+    margin-top:14px; font-size:13px; color:var(--muted);
+    display:flex; align-items:center; gap:6px;
+  }
+  .advance-note b{ color:var(--turf); }
+
+  /* ---------- SCHEDULE ---------- */
+  .day-tabs{
+    display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px;
+  }
+  .day-tab{
+    background:var(--steel); border:1px solid var(--steel-line); color:var(--muted);
+    padding:8px 16px; border-radius:999px; font-size:13px; font-weight:600;
+    cursor:pointer; transition:all .15s; font-family:'Inter',sans-serif;
+  }
+  .day-tab:hover{ color:var(--chalk); }
+  .day-tab.active{ background:var(--amber); color:var(--pitch-deep); border-color:var(--amber); }
+
+  .match-list{ display:flex; flex-direction:column; gap:8px; }
+  .match-day{ display:none; flex-direction:column; gap:8px; }
+  .match-day.active{ display:flex; }
+  .match-row{
+    display:grid; grid-template-columns:64px 1fr auto;
+    align-items:center; gap:14px;
+    background:var(--steel); border:1px solid var(--steel-line); border-radius:8px;
+    padding:12px 16px;
+  }
+  .match-time{ font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--amber); font-weight:600; }
+  .match-teams{ display:flex; align-items:center; gap:8px; font-size:14.5px; font-weight:600; flex-wrap:wrap; }
+  .match-teams .vs{ color:var(--muted); font-weight:500; font-size:12px; }
+  .match-tag{
+    font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--muted);
+    border:1px solid var(--steel-line); padding:3px 8px; border-radius:999px; white-space:nowrap;
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer{ padding:32px 0 48px; text-align:center; }
+  footer p{ color:var(--muted); font-size:13px; }
+  footer .brand{ justify-content:center; display:flex; margin-bottom:10px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand brand-hero"><span>2027</span>・U12沖繩國際軟式棒球錦標賽</div>
+    <div class="navlinks">
+      <a href="#overview">總覽</a>
+      <a href="#format">賽制</a>
+      <a href="#schedule">賽程</a>
+      <a href="register.html">隊伍報名</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">2027.01.22 — 01.24 · 開放報名中</div>
+    <h1>六個國家<br><em>十二支隊伍</em><br>一座冠軍獎盃</h1>
+    <p class="lead">2027 U12 沖繩國際軟式棒球錦標賽是一場跨國巡迴賽事，來自六個國家的十二支隊伍齊聚一堂，三天內透過分組循環賽與淘汰賽爭奪最終冠軍。</p>
+    <div class="hero-meta">
+      <span class="pill">📍 主辦地・日本沖繩</span>
+      <span class="pill">🗓 為期 3 天</span>
+      <span class="pill">🏆 3 組循環 + 淘汰賽</span>
+    </div>
+  </div>
+
+  <div class="ticker-shell">
+    <div class="ticker" id="ticker"></div>
+  </div>
+</header>
+
+<section id="overview">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">01 · 賽事規模</div>
+      <h2>國際等級的規模</h2>
+      <p>六個國家、十二支隊伍齊聚，三天內以分組賽驗證實力，晉級隊伍進入淘汰賽爭奪最終榮耀。</p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat"><div class="num">6</div><div class="lab">參賽國家</div></div>
+      <div class="stat"><div class="num">12</div><div class="lab">參賽隊伍</div></div>
+      <div class="stat"><div class="num">3</div><div class="lab">分組數（每組 4 隊）</div></div>
+      <div class="stat"><div class="num">36</div><div class="lab">總場次</div></div>
+      <div class="stat"><div class="num">3</div><div class="lab">賽事天數</div></div>
+      <div class="stat"><div class="num">1</div><div class="lab">主辦場館</div></div>
+    </div>
+
+    <div class="countries" id="countries"></div>
+  </div>
+</section>
+
+<section id="format">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">02 · 賽制說明</div>
+      <h2>分組循環＋淘汰賽</h2>
+      <p>本屆賽事採三天賽程，12支隊伍先進行分組循環賽，再依分組成績晉級八強淘汰賽。未晉級八強的隊伍將安排交流賽，確保所有參賽隊伍都有持續比賽及國際交流的機會。</p>
+    </div>
+
+    <div class="format-flow">
+      <div class="flow-stage">
+        <div class="flow-label">分組賽<small>Day 1–2</small></div>
+        <div class="flow-desc">
+          <p>12支隊伍依抽籤分入A、B、C三組，每組4隊進行循環賽。分組賽於前兩天完成，各隊依比賽戰績排定組內名次。</p>
+          <div class="groups-pending">
+            <span class="pending-icon">🗓</span>
+            <div>
+              <div class="pending-title">分組名單尚未公布</div>
+              <div class="pending-desc">分組名單將於接近比賽日期時正式公布。</div>
+            </div>
+          </div>
+          <div class="advance-note"><b>●</b> 各組前二名，共6支隊伍直接晉級八強；另外由三組第三名隊伍中，選出戰績最佳的2支隊伍晉級，共8支隊伍進入淘汰賽。</div>
+        </div>
+      </div>
+
+      <div class="flow-stage">
+        <div class="flow-label">八強<small>Day 2・下午</small></div>
+        <div class="flow-desc">8支晉級隊伍進行交叉對戰，採單場淘汰制，獲勝的4支隊伍晉級四強。</div>
+      </div>
+
+      <div class="flow-stage">
+        <div class="flow-label">交流賽<small>Day 3</small></div>
+        <div class="flow-desc">
+          <p>未晉級八強的4支隊伍將進行配對交流賽，讓所有參賽隊伍都能持續累積比賽經驗，並加深不同國家及地區球隊之間的交流。</p>
+          <ul class="exchange-rules">
+            <li>未晉級八強的4支隊伍配對進行2場交流賽。</li>
+            <li>每支未晉級隊伍至少參加1場交流賽。</li>
+            <li>配對時原則上避免與分組賽同組的隊伍再次交手。</li>
+            <li>交流賽結果不影響八強淘汰賽及最終前四名排名。</li>
+            <li>實際比賽時間及場地將於分組賽結束後公布。</li>
+            <li>交流賽可使用其他球場，與四強、季軍賽或其他淘汰賽分場同步進行。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="flow-stage">
+        <div class="flow-label">四強<small>Day 3・上午</small></div>
+        <div class="flow-desc">4支八強勝隊進行準決賽，獲勝隊伍晉級冠軍賽，落敗隊伍進入季軍賽。</div>
+      </div>
+
+      <div class="flow-stage">
+        <div class="flow-label">季軍賽<small>Day 3・下午</small></div>
+        <div class="flow-desc">兩支準決賽落敗隊伍進行季軍賽，爭奪本屆賽事第三名。</div>
+      </div>
+
+      <div class="flow-stage">
+        <div class="flow-label">冠軍賽<small>Day 3・下午</small></div>
+        <div class="flow-desc">兩支準決賽獲勝隊伍爭奪本屆賽事冠軍。冠軍賽結束後，舉行閉幕式及頒獎典禮。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="schedule" style="border-bottom:none;">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">03 · 賽程時間表</div>
+      <h2>三天賽程</h2>
+      <p>點選日期查看當天賽事，時間為主場館當地時間。以下為代表性範例場次，完整 36 場對戰請依實際抽籤結果更新。</p>
+    </div>
+
+    <div class="day-tabs" id="dayTabs"></div>
+    <div class="match-list" id="matchList"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="brand">2027 U12 沖繩國際軟式棒球錦標賽</div>
+    <p>本頁面為賽事資訊示意頁，隊伍、分組與賽程內容可於資料區更新。</p>
+  </div>
+</footer>
+
+<script>
+/* ======================================================
+   在此編輯所有賽事資料 —— 修改這裡即可更新整個頁面
+   ====================================================== */
+
+// 參賽國家（可自行替換為實際國家與國旗 emoji）
+const COUNTRIES = [
+  {flag:"🇹🇼", name:"台灣"},
+  {flag:"🇯🇵", name:"日本"},
+  {flag:"🇧🇷", name:"巴西"},
+  {flag:"🇨🇦", name:"加拿大"},
+  {flag:"🇵🇪", name:"秘魯"},
+  {flag:"🇰🇷", name:"韓國"},
+];
+
+// 賽程（依日期分組，時間、對戰隊伍與標籤可自行調整）
+const SCHEDULE = [
+  { day:"1/22 (五)", matches:[
+    { time:"09:00", teams:"A1 vs A2", note:"A 組", tag:"分組賽" },
+    { time:"09:00", teams:"B1 vs B2", note:"B 組", tag:"分組賽" },
+    { time:"09:00", teams:"C1 vs C2", note:"C 組", tag:"分組賽" },
+    { time:"11:00", teams:"A3 vs A4", note:"A 組", tag:"分組賽" },
+    { time:"11:00", teams:"B3 vs B4", note:"B 組", tag:"分組賽" },
+    { time:"11:00", teams:"C3 vs C4", note:"C 組", tag:"分組賽" },
+  ]},
+  { day:"1/23 (六)", matches:[
+    { time:"08:00", teams:"A1 vs A3", note:"A 組", tag:"分組賽" },
+    { time:"08:00", teams:"B1 vs B3", note:"B 組", tag:"分組賽" },
+    { time:"08:00", teams:"C1 vs C3", note:"C 組", tag:"分組賽" },
+    { time:"09:30", teams:"A2 vs A4", note:"A 組", tag:"分組賽" },
+    { time:"09:30", teams:"B2 vs B4", note:"B 組", tag:"分組賽" },
+    { time:"09:30", teams:"C2 vs C4", note:"C 組", tag:"分組賽" },
+    { time:"11:00", teams:"A1 vs A4", note:"A 組", tag:"分組賽" },
+    { time:"11:00", teams:"B1 vs B4", note:"B 組", tag:"分組賽" },
+    { time:"11:00", teams:"C1 vs C4", note:"C 組", tag:"分組賽" },
+    { time:"12:30", teams:"A2 vs A3", note:"A 組", tag:"分組賽" },
+    { time:"12:30", teams:"B2 vs B3", note:"B 組", tag:"分組賽" },
+    { time:"12:30", teams:"C2 vs C3", note:"C 組", tag:"分組賽" },
+    { time:"14:30", teams:"QF1", note:"A 組第 1 vs 最佳第 3", tag:"八強" },
+    { time:"14:30", teams:"QF2", note:"B 組第 1 vs C 組第 2", tag:"八強" },
+    { time:"16:00", teams:"QF3", note:"C 組第 1 vs A 組第 2", tag:"八強" },
+    { time:"16:00", teams:"QF4", note:"B 組第 2 vs 最佳第 3", tag:"八強" },
+  ]},
+  { day:"1/24 (日)", matches:[
+    { time:"09:00", teams:"SF1", note:"QF1 勝 vs QF2 勝", tag:"四強" },
+    { time:"09:00", teams:"交流賽 1", note:"未晉級隊伍配對交流賽", tag:"交流賽" },
+    { time:"10:30", teams:"SF2", note:"QF3 勝 vs QF4 勝", tag:"四強" },
+    { time:"10:30", teams:"交流賽 2", note:"未晉級隊伍配對交流賽", tag:"交流賽" },
+    { time:"13:00", teams:"季軍賽", note:"SF 落敗隊伍", tag:"季軍賽" },
+    { time:"15:00", teams:"冠軍賽", note:"SF 勝隊爭冠", tag:"冠軍賽" },
+  ]},
+];
+
+/* ====================================================== */
+
+// 渲染跑馬燈
+const ticker = document.getElementById('ticker');
+const tickerItems = [...COUNTRIES, ...COUNTRIES].map(c =>
+  `<div class="ticker-item"><span class="flag">${c.flag}</span><b>${c.name}</b></div>`
+).join('');
+ticker.innerHTML = tickerItems + tickerItems;
+
+// 渲染國家 chips
+document.getElementById('countries').innerHTML = COUNTRIES.map(c =>
+  `<div class="country-chip"><span class="flag">${c.flag}</span>${c.name}</div>`
+).join('');
+
+// 渲染賽程 tabs + 內容
+const tabsEl = document.getElementById('dayTabs');
+const listEl = document.getElementById('matchList');
+
+tabsEl.innerHTML = SCHEDULE.map((d,i) =>
+  `<button class="day-tab${i===0?' active':''}" data-idx="${i}">${d.day}</button>`
+).join('');
+
+listEl.innerHTML = SCHEDULE.map((d,i) => `
+  <div class="match-day${i===0?' active':''}" data-idx="${i}">
+    ${d.matches.map(m => `
+      <div class="match-row">
+        <div class="match-time mono">${m.time}</div>
+        <div class="match-teams">${m.teams} <span class="vs">${m.note}</span></div>
+        <div class="match-tag">${m.tag}</div>
+      </div>
+    `).join('')}
+  </div>
+`).join('');
+
+tabsEl.addEventListener('click', (e) => {
+  const btn = e.target.closest('.day-tab');
+  if(!btn) return;
+  const idx = btn.dataset.idx;
+  document.querySelectorAll('.day-tab').forEach(b => b.classList.toggle('active', b.dataset.idx === idx));
+  document.querySelectorAll('.match-day').forEach(d => d.classList.toggle('active', d.dataset.idx === idx));
+});
+</script>
+
+</body>
+</html>

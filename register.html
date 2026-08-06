@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>隊伍報名｜2027 U12 沖繩國際軟式棒球錦標賽</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pitch:#0B1D33;
+    --pitch-deep:#071322;
+    --chalk:#F5F7FA;
+    --amber:#FFB627;
+    --turf:#1F9D5C;
+    --steel:#22344A;
+    --steel-line:#324a63;
+    --muted:#93A4B8;
+    --danger:#FF6B6B;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--pitch);
+    color:var(--chalk);
+    font-family:'Inter',sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Barlow Condensed',sans-serif;
+    text-transform:uppercase;
+    letter-spacing:0.02em;
+  }
+  .mono{ font-family:'IBM Plex Mono',monospace; }
+  a{color:inherit;}
+  .wrap{ max-width:720px; margin:0 auto; padding:0 20px; }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(7,19,34,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--steel-line);
+  }
+  nav .navwrap{
+    max-width:900px; margin:0 auto; padding:8px 20px;
+    display:flex; align-items:center; justify-content:space-between;
+    flex-wrap:wrap; gap:6px 16px;
+    min-height:56px;
+  }
+  .brand{ font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:20px; letter-spacing:0.03em; }
+  .brand span{ color:var(--amber); }
+  .brand-hero{
+    color:var(--chalk);
+    font-size:clamp(13px, 3.6vw, 20px);
+    line-height:1.15;
+    flex:1 1 auto;
+    min-width:0;
+  }
+  .navlinks{ display:flex; gap:20px; font-size:14px; font-weight:600; }
+  .navlinks a{ opacity:0.75; text-decoration:none; transition:opacity .2s; }
+  .navlinks a:hover, .navlinks a.active{ opacity:1; color:var(--amber); }
+
+  /* ---------- HERO ---------- */
+  .hero{ padding:48px 0 32px; border-bottom:1px solid var(--steel-line); }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:13px; font-weight:600; color:var(--amber);
+    letter-spacing:0.08em; text-transform:uppercase;
+    margin-bottom:14px;
+  }
+  .eyebrow::before{
+    content:""; width:7px; height:7px; border-radius:50%;
+    background:var(--amber); box-shadow:0 0 0 4px rgba(255,182,39,0.18);
+  }
+  .hero h1{ font-size:clamp(32px,7vw,46px); font-weight:800; color:var(--chalk); line-height:1.02;}
+  .hero p{ margin-top:12px; color:var(--muted); font-size:15px; max-width:480px; }
+
+  .format-note{
+    background:var(--steel); border:1px solid var(--steel-line); border-left:3px solid var(--amber);
+    padding:14px 16px; border-radius:6px; font-size:13.5px; color:var(--muted);
+  }
+
+  /* ---------- FORM ---------- */
+  form{ padding:40px 0 80px; }
+  fieldset{ border:none; margin-bottom:36px; }
+  legend{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:22px;
+    color:var(--chalk); margin-bottom:18px; padding:0; width:100%;
+  }
+  legend .sec-num{ font-family:'IBM Plex Mono',monospace; color:var(--amber); font-size:13px; font-weight:600;}
+
+  .field{ margin-bottom:16px; }
+  .field label{
+    display:block; font-size:13px; font-weight:600; color:var(--muted);
+    margin-bottom:6px; letter-spacing:0.01em;
+  }
+  .field label .req{ color:var(--amber); margin-left:2px; }
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:520px){ .row2{ grid-template-columns:1fr; } }
+
+  input[type=text], input[type=email], input[type=tel], select{
+    width:100%;
+    background:var(--steel); border:1px solid var(--steel-line); color:var(--chalk);
+    padding:12px 14px; border-radius:8px; font-size:15px; font-family:'Inter',sans-serif;
+    transition:border-color .15s;
+  }
+  input::placeholder{ color:#5C7086; }
+  input:focus, select:focus{ outline:none; border-color:var(--amber); }
+  select{ appearance:none; -webkit-appearance:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%2393A4B8' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+    background-repeat:no-repeat; background-position:right 14px center;
+    padding-right:36px;
+  }
+  .hint{ font-size:12px; color:#5C7086; margin-top:5px; }
+  .error-msg{ font-size:12px; color:var(--danger); margin-top:5px; display:none; }
+  .field.invalid input, .field.invalid select{ border-color:var(--danger); }
+  .field.invalid .error-msg{ display:block; }
+
+  /* ---------- PLAYER ROSTER ---------- */
+  .roster{ display:flex; flex-direction:column; gap:14px; margin-bottom:14px; }
+  .player-card{
+    background:var(--steel); border:1px solid var(--steel-line); border-radius:10px;
+    padding:16px;
+  }
+  .player-card-head{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:14px; padding-bottom:12px; border-bottom:1px solid var(--steel-line);
+  }
+  .player-card-head .idx{
+    font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:16px;
+    color:var(--amber); text-transform:uppercase; letter-spacing:0.03em;
+  }
+  .player-card-head .rm{
+    background:none; border:none; color:var(--muted); cursor:pointer;
+    font-size:18px; width:32px; height:32px; border-radius:6px; transition:all .15s;
+  }
+  .player-card-head .rm:hover{ color:var(--danger); background:rgba(255,107,107,0.1); }
+  .player-card input, .player-card select{ background:var(--pitch-deep); }
+  .player-card input.invalid, .player-card select.invalid{ border-color:var(--danger); }
+  .player-card .field{ margin-bottom:12px; }
+  .player-card .field:last-child{ margin-bottom:0; }
+  .player-card .row2{ gap:12px; }
+  .player-card .row3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; }
+  @media (max-width:520px){ .player-card .row3{ grid-template-columns:1fr; } }
+
+  .photo-upload{
+    display:flex; align-items:center; gap:14px;
+  }
+  .photo-preview{
+    width:64px; height:64px; border-radius:8px; flex-shrink:0;
+    background:var(--pitch-deep) center/cover no-repeat;
+    border:1px dashed var(--steel-line);
+    display:flex; align-items:center; justify-content:center;
+    font-size:11px; color:var(--muted); text-align:center;
+  }
+  .photo-input-wrap{ flex:1; }
+  .photo-input-wrap input[type=file]{
+    width:100%; background:var(--pitch-deep); border:1px solid var(--steel-line); color:var(--muted);
+    padding:9px 10px; border-radius:8px; font-size:12.5px; font-family:'Inter',sans-serif;
+  }
+  .photo-input-wrap input[type=file]::file-selector-button{
+    background:var(--steel-line); color:var(--chalk); border:none; padding:6px 12px;
+    border-radius:6px; font-size:12px; margin-right:10px; cursor:pointer;
+  }
+
+  .add-player{
+    display:inline-flex; align-items:center; gap:8px;
+    background:none; border:1px dashed var(--steel-line); color:var(--muted);
+    padding:10px 16px; border-radius:8px; font-size:13.5px; font-weight:600;
+    cursor:pointer; transition:all .15s; width:100%; justify-content:center;
+    font-family:'Inter',sans-serif;
+  }
+  .add-player:hover{ border-color:var(--amber); color:var(--amber); }
+
+  /* ---------- AGREE + SUBMIT ---------- */
+  .agree{
+    display:flex; align-items:flex-start; gap:10px; margin-bottom:24px;
+    font-size:13.5px; color:var(--muted);
+  }
+  .agree input{ margin-top:3px; accent-color:var(--amber); width:16px; height:16px; flex-shrink:0; }
+
+  .submit-btn{
+    width:100%; background:var(--amber); color:var(--pitch-deep); border:none;
+    padding:16px; border-radius:8px; font-size:16px; font-weight:700;
+    font-family:'Barlow Condensed',sans-serif; text-transform:uppercase; letter-spacing:0.04em;
+    cursor:pointer; transition:transform .15s, background .15s;
+  }
+  .submit-btn:hover{ background:#ffc659; }
+  .submit-btn:active{ transform:scale(0.99); }
+
+  .status-banner{
+    display:none; margin-top:18px; padding:14px 16px; border-radius:8px;
+    font-size:13.5px; border:1px solid; align-items:center; gap:10px;
+  }
+  .status-banner.show{ display:flex; }
+  .status-banner.success{ background:rgba(31,157,92,0.1); border-color:var(--turf); color:#7FE0AC; }
+
+  footer{ padding:28px 0 48px; text-align:center; border-top:1px solid var(--steel-line); }
+  footer p{ color:var(--muted); font-size:13px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="navwrap">
+    <div class="brand brand-hero">2027・U12沖繩國際軟式棒球錦標賽</div>
+    <div class="navlinks">
+      <a href="index.html">賽事資訊</a>
+      <a href="register.html" class="active">隊伍報名</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">賽事日期 2027.01.22–01.24</div>
+    <h1>隊伍報名表</h1>
+    <p>請填寫隊伍基本資料、聯絡人資訊與選手名單。送出前請確認資料無誤，送出後將依序寄發確認信。</p>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="format-note" style="margin-top:32px;">
+    ⚠️ 提醒：每隊教練報名名額以 <b style="color:var(--chalk);">2 位</b>為限，請於下方聯絡人資訊填寫教練聯絡方式。
+  </div>
+</div>
+
+<div class="wrap">
+  <form id="regForm" novalidate>
+
+    <fieldset>
+      <legend><span class="sec-num">01</span> 隊伍資訊</legend>
+
+      <div class="field" id="f-teamName">
+        <label>隊伍名稱 <span class="req">*</span></label>
+        <input type="text" name="teamName" placeholder="例：台灣隊">
+        <div class="error-msg">請輸入隊伍名稱</div>
+      </div>
+
+      <div class="row2">
+        <div class="field" id="f-country">
+          <label>代表國家 <span class="req">*</span></label>
+          <select name="country">
+            <option value="">請選擇國家</option>
+            <option value="TW">🇹🇼 台灣</option>
+            <option value="JP">🇯🇵 日本</option>
+            <option value="BR">🇧🇷 巴西</option>
+            <option value="CA">🇨🇦 加拿大</option>
+            <option value="PE">🇵🇪 秘魯</option>
+            <option value="KR">🇰🇷 韓國</option>
+          </select>
+          <div class="error-msg">請選擇代表國家</div>
+        </div>
+        <div class="field">
+          <label>隊伍簡稱／代碼</label>
+          <input type="text" name="teamCode" placeholder="例：TPE" maxlength="6">
+          <div class="hint">選填，用於賽程表顯示</div>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend><span class="sec-num">02</span> 聯絡人資訊</legend>
+
+      <div class="field" id="f-contactName">
+        <label>聯絡人姓名 <span class="req">*</span></label>
+        <input type="text" name="contactName" placeholder="請輸入姓名">
+        <div class="error-msg">請輸入聯絡人姓名</div>
+      </div>
+
+      <div class="row2">
+        <div class="field" id="f-email">
+          <label>Email <span class="req">*</span></label>
+          <input type="email" name="email" placeholder="name@example.com">
+          <div class="error-msg">請輸入有效的 Email</div>
+        </div>
+        <div class="field" id="f-phone">
+          <label>聯絡電話 <span class="req">*</span></label>
+          <input type="tel" name="phone" placeholder="0912-345-678">
+          <div class="error-msg">請輸入聯絡電話</div>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend><span class="sec-num">03</span> 選手名單</legend>
+      <div class="roster" id="roster"></div>
+      <button type="button" class="add-player" id="addPlayer">＋ 新增選手</button>
+      <div class="hint" style="margin-top:8px;">至少需填寫 1 名選手，並完整填寫中文姓名、護照英文姓名、投打位置與背號；身高體重與照片可選填</div>
+    </fieldset>
+
+    <div class="agree">
+      <input type="checkbox" id="agree" name="agree">
+      <label for="agree">我確認以上資料屬實，並同意主辦單位依賽事規則使用本報名資料進行賽程安排與聯繫。</label>
+    </div>
+
+    <button type="submit" class="submit-btn">送出報名</button>
+
+    <div class="status-banner success" id="statusBanner">
+      ✅ 報名資料已準備完成（目前尚未連接後端，資料已印在瀏覽器主控台 console）。
+    </div>
+  </form>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>如報名過程遇到問題，請聯繫賽事籌備組。</p>
+  </div>
+</footer>
+
+<script>
+/* ======================================================
+   選手名單：動態新增／刪除卡片
+   ====================================================== */
+const roster = document.getElementById('roster');
+let playerCount = 0;
+
+function addPlayerRow(){
+  playerCount++;
+  const uid = `p${Date.now()}_${playerCount}`;
+  const card = document.createElement('div');
+  card.className = 'player-card';
+  card.innerHTML = `
+    <div class="player-card-head">
+      <span class="idx">選手 <span class="idx-num">${playerCount}</span></span>
+      <button type="button" class="rm" title="移除選手">×</button>
+    </div>
+
+    <div class="row2">
+      <div class="field">
+        <label>中文姓名 <span class="req">*</span></label>
+        <input type="text" name="cnName" placeholder="例：王小明">
+      </div>
+      <div class="field">
+        <label>護照英文姓名 <span class="req">*</span></label>
+        <input type="text" name="enName" placeholder="例：WANG, XIAO-MING">
+      </div>
+    </div>
+
+    <div class="row2">
+      <div class="field">
+        <label>西元出生年月日</label>
+        <input type="date" name="birthDate">
+      </div>
+      <div class="field">
+        <label>投打位置 <span class="req">*</span></label>
+        <input type="text" name="position" placeholder="例：右投右打、投手、游擊手">
+      </div>
+    </div>
+
+    <div class="row3">
+      <div class="field">
+        <label>身高（cm）</label>
+        <input type="text" inputmode="numeric" name="height" placeholder="175">
+      </div>
+      <div class="field">
+        <label>體重（kg）</label>
+        <input type="text" inputmode="numeric" name="weight" placeholder="70">
+      </div>
+      <div class="field">
+        <label>背號 <span class="req">*</span></label>
+        <input type="text" name="playerNumber" placeholder="例：7">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>照片</label>
+      <div class="photo-upload">
+        <div class="photo-preview" id="preview_${uid}">無照片</div>
+        <div class="photo-input-wrap">
+          <input type="file" name="photo" accept="image/*" id="file_${uid}">
+        </div>
+      </div>
+    </div>
+  `;
+  roster.appendChild(card);
+
+  card.querySelector('.rm').addEventListener('click', () => {
+    card.remove();
+    renumberRows();
+  });
+
+  const fileInput = card.querySelector(`#file_${uid}`);
+  const preview = card.querySelector(`#preview_${uid}`);
+  fileInput.addEventListener('change', () => {
+    const file = fileInput.files[0];
+    if(!file) return;
+    const url = URL.createObjectURL(file);
+    preview.style.backgroundImage = `url('${url}')`;
+    preview.textContent = '';
+  });
+}
+
+function renumberRows(){
+  playerCount = 0;
+  roster.querySelectorAll('.player-card').forEach(card => {
+    playerCount++;
+    card.querySelector('.idx-num').textContent = playerCount;
+  });
+}
+
+document.getElementById('addPlayer').addEventListener('click', addPlayerRow);
+// 預設先給 5 個選手欄位
+for(let i=0;i<5;i++) addPlayerRow();
+
+/* ======================================================
+   表單驗證 + 送出（目前只做前端驗證與資料整理，
+   之後要接後端時，把 TODO 區塊換成實際 fetch 呼叫即可）
+   ====================================================== */
+const form = document.getElementById('regForm');
+const statusBanner = document.getElementById('statusBanner');
+
+function setInvalid(id, invalid){
+  const el = document.getElementById(id);
+  if(el) el.classList.toggle('invalid', invalid);
+}
+
+form.addEventListener('submit', function(e){
+  e.preventDefault();
+  statusBanner.classList.remove('show');
+
+  const data = new FormData(form);
+  let valid = true;
+
+  const teamName = data.get('teamName').trim();
+  setInvalid('f-teamName', !teamName);
+  if(!teamName) valid = false;
+
+  const country = data.get('country');
+  setInvalid('f-country', !country);
+  if(!country) valid = false;
+
+  const contactName = data.get('contactName').trim();
+  setInvalid('f-contactName', !contactName);
+  if(!contactName) valid = false;
+
+  const email = data.get('email').trim();
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  setInvalid('f-email', !emailOk);
+  if(!emailOk) valid = false;
+
+  const phone = data.get('phone').trim();
+  setInvalid('f-phone', !phone);
+  if(!phone) valid = false;
+
+  // 選手卡片：只要有填任何一個欄位，就視為「已開始填寫」，
+  // 此時中文姓名／護照英文姓名／投打位置／背號皆為必填
+  const playerCards = [...roster.querySelectorAll('.player-card')];
+  let filledPlayerCount = 0;
+
+  playerCards.forEach(card => {
+    const cnEl = card.querySelector('input[name="cnName"]');
+    const enEl = card.querySelector('input[name="enName"]');
+    const posEl = card.querySelector('input[name="position"]');
+    const numEl = card.querySelector('input[name="playerNumber"]');
+
+    const cn = cnEl.value.trim();
+    const en = enEl.value.trim();
+    const pos = posEl.value.trim();
+    const num = numEl.value.trim();
+
+    const started = cn || en || pos || num;
+    [cnEl, enEl, posEl, numEl].forEach(el => el.classList.remove('invalid'));
+
+    if(started){
+      filledPlayerCount++;
+      if(!cn){ cnEl.classList.add('invalid'); valid = false; }
+      if(!en){ enEl.classList.add('invalid'); valid = false; }
+      if(!pos){ posEl.classList.add('invalid'); valid = false; }
+      if(!num){ numEl.classList.add('invalid'); valid = false; }
+    }
+  });
+
+  if(filledPlayerCount === 0) valid = false;
+
+  if(!document.getElementById('agree').checked) valid = false;
+
+  if(!valid){
+    form.querySelector('.field.invalid, .invalid')?.scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+
+  // 整理成結構化資料
+  const playerRows = playerCards.map(card => ({
+    cnName: card.querySelector('input[name="cnName"]').value.trim(),
+    enName: card.querySelector('input[name="enName"]').value.trim(),
+    birthDate: card.querySelector('input[name="birthDate"]').value,
+    position: card.querySelector('input[name="position"]').value.trim(),
+    height: card.querySelector('input[name="height"]').value.trim(),
+    weight: card.querySelector('input[name="weight"]').value.trim(),
+    number: card.querySelector('input[name="playerNumber"]').value.trim(),
+    photoFile: card.querySelector('input[name="photo"]').files[0]?.name || null,
+  })).filter(p => p.cnName);
+
+  const payload = {
+    teamName,
+    country,
+    teamCode: data.get('teamCode').trim(),
+    contactName,
+    email,
+    phone,
+    players: playerRows,
+    submittedAt: new Date().toISOString(),
+  };
+
+  // ---- TODO: 之後接後端時，把下面換成實際送出邏輯 ----
+  // 注意：因為選手照片是檔案（File），無法直接放進 JSON，
+  // 實際串接後端時建議改用 FormData 上傳，範例：
+  //
+  // const fd = new FormData();
+  // fd.append('teamName', teamName);
+  // ... 其他欄位 ...
+  // roster.querySelectorAll('.player-card').forEach((card, i) => {
+  //   const file = card.querySelector('input[name="photo"]').files[0];
+  //   if(file) fd.append(`playerPhoto_${i}`, file);
+  // });
+  // fetch('https://formspree.io/f/yourFormId', { method:'POST', body: fd });
+  console.log('報名資料 payload：', payload);
+  // -----------------------------------------------------
+
+  statusBanner.classList.add('show');
+  statusBanner.scrollIntoView({behavior:'smooth', block:'nearest'});
+});
+</script>
+
+</body>
+</html>

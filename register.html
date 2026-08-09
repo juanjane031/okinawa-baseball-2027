@@ -190,6 +190,7 @@
   }
   .submit-btn:hover{ background:#ffc659; }
   .submit-btn:active{ transform:scale(0.99); }
+  .submit-btn:disabled{ opacity:0.6; cursor:not-allowed; transform:none; }
 
   .status-banner{
     display:none; margin-top:18px; padding:14px 16px; border-radius:8px;
@@ -197,6 +198,7 @@
   }
   .status-banner.show{ display:flex; }
   .status-banner.success{ background:rgba(31,157,92,0.1); border-color:var(--turf); color:#7FE0AC; }
+  .status-banner.error{ background:rgba(255,107,107,0.1); border-color:var(--danger); color:var(--danger); }
 
   footer{ padding:28px 0 48px; text-align:center; border-top:1px solid var(--steel-line); }
   footer p{ color:var(--muted); font-size:13px; }
@@ -297,11 +299,9 @@
       <label for="agree">我確認以上資料屬實，並同意主辦單位依賽事規則使用本報名資料進行賽程安排與聯繫。</label>
     </div>
 
-    <button type="submit" class="submit-btn">送出報名</button>
+    <button type="submit" class="submit-btn" id="submitBtn">送出報名</button>
 
-    <div class="status-banner success" id="statusBanner">
-      ✅ 報名資料已準備完成（目前尚未連接後端，資料已印在瀏覽器主控台 console）。
-    </div>
+    <div class="status-banner" id="statusBanner"></div>
   </form>
 </div>
 
@@ -407,18 +407,39 @@ document.getElementById('addPlayer').addEventListener('click', addPlayerRow);
 for(let i=0;i<5;i++) addPlayerRow();
 
 /* ======================================================
-   表單驗證 + 送出（目前只做前端驗證與資料整理，
-   之後要接後端時，把 TODO 區塊換成實際 fetch 呼叫即可）
+   表單驗證 + 送出（串接 Google Apps Script Web App）
    ====================================================== */
+
+// ⚠️ 部署 Google Apps Script 後，把下面換成你的 Web App 網址
+// 網址格式類似：https://script.google.com/macros/s/xxxxxxxx/exec
+const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwIZPZp0m0zE-kmL9TmGUo29XOPyig8ojUr8zKDCf50V6ZEwVdCGiBGhtUev_UceQ2TpA/exec';
+
 const form = document.getElementById('regForm');
 const statusBanner = document.getElementById('statusBanner');
+const submitBtn = document.getElementById('submitBtn');
 
 function setInvalid(id, invalid){
   const el = document.getElementById(id);
   if(el) el.classList.toggle('invalid', invalid);
 }
 
-form.addEventListener('submit', function(e){
+function showBanner(type, message){
+  statusBanner.className = 'status-banner show ' + type;
+  statusBanner.textContent = message;
+  statusBanner.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+// 將選手照片檔案轉成 base64字串，方便一併送到 Google Apps Script
+function fileToBase64(file){
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result); // data:image/xxx;base64,....
+    reader.onerror = () => reject(new Error('照片讀取失敗'));
+    reader.readAsDataURL(file);
+  });
+}
+
+form.addEventListener('submit', async function(e){
   e.preventDefault();
   statusBanner.classList.remove('show');
 
@@ -483,46 +504,84 @@ form.addEventListener('submit', function(e){
     return;
   }
 
-  // 整理成結構化資料
-  const playerRows = playerCards.map(card => ({
-    cnName: card.querySelector('input[name="cnName"]').value.trim(),
-    enName: card.querySelector('input[name="enName"]').value.trim(),
-    birthDate: card.querySelector('input[name="birthDate"]').value,
-    position: card.querySelector('input[name="position"]').value.trim(),
-    height: card.querySelector('input[name="height"]').value.trim(),
-    weight: card.querySelector('input[name="weight"]').value.trim(),
-    number: card.querySelector('input[name="playerNumber"]').value.trim(),
-    photoFile: card.querySelector('input[name="photo"]').files[0]?.name || null,
-  })).filter(p => p.cnName);
+  // 防止重複送出：停用送出按鈕並顯示送出中狀態
+  submitBtn.disabled = true;
+  const originalBtnText = submitBtn.textContent;
+  submitBtn.textContent = '送出中…';
 
-  const payload = {
-    teamName,
-    country,
-    teamCode: data.get('teamCode').trim(),
-    contactName,
-    email,
-    phone,
-    players: playerRows,
-    submittedAt: new Date().toISOString(),
-  };
+  try {
+    // 整理成結構化資料（含選手照片轉 base64）
+    const playerRows = await Promise.all(playerCards.map(async card => {
+      const cnName = card.querySelector('input[name="cnName"]').value.trim();
+      if(!cnName) return null;
 
-  // ---- TODO: 之後接後端時，把下面換成實際送出邏輯 ----
-  // 注意：因為選手照片是檔案（File），無法直接放進 JSON，
-  // 實際串接後端時建議改用 FormData 上傳，範例：
-  //
-  // const fd = new FormData();
-  // fd.append('teamName', teamName);
-  // ... 其他欄位 ...
-  // roster.querySelectorAll('.player-card').forEach((card, i) => {
-  //   const file = card.querySelector('input[name="photo"]').files[0];
-  //   if(file) fd.append(`playerPhoto_${i}`, file);
-  // });
-  // fetch('https://formspree.io/f/yourFormId', { method:'POST', body: fd });
-  console.log('報名資料 payload：', payload);
-  // -----------------------------------------------------
+      const file = card.querySelector('input[name="photo"]').files[0];
+      let photoBase64 = '';
+      let photoName = '';
+      let photoMime = '';
+      if(file){
+        photoBase64 = await fileToBase64(file);
+        photoName = file.name;
+        photoMime = file.type;
+      }
 
-  statusBanner.classList.add('show');
-  statusBanner.scrollIntoView({behavior:'smooth', block:'nearest'});
+      return {
+        cnName,
+        enName: card.querySelector('input[name="enName"]').value.trim(),
+        birthDate: card.querySelector('input[name="birthDate"]').value,
+        position: card.querySelector('input[name="position"]').value.trim(),
+        height: card.querySelector('input[name="height"]').value.trim(),
+        weight: card.querySelector('input[name="weight"]').value.trim(),
+        number: card.querySelector('input[name="playerNumber"]').value.trim(),
+        photoBase64,
+        photoName,
+        photoMime,
+      };
+    }));
+
+    const payload = {
+      teamName,
+      country,
+      teamCode: data.get('teamCode').trim(),
+      contactName,
+      email,
+      phone,
+      players: playerRows.filter(Boolean),
+      submittedAt: new Date().toISOString(),
+    };
+
+    // 送到 Google Apps Script Web App
+    // 注意：不要自行加上 'Content-Type: application/json' 表頭，
+    // 保持預設的 text/plain 才能避免觸發 CORS 預檢請求（OPTIONS）
+    // 導致 Apps Script 無法正常回應。
+    const res = await fetch(GAS_WEB_APP_URL, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+
+    if(!res.ok){
+      throw new Error(`伺服器回應錯誤（狀態碼 ${res.status}）`);
+    }
+
+    const result = await res.json();
+
+    if(result.result === 'success'){
+      showBanner('success', '✅ 報名資料已成功送出。');
+      form.reset();
+      roster.innerHTML = '';
+      playerCount = 0;
+      for(let i=0;i<5;i++) addPlayerRow();
+    } else {
+      throw new Error(result.message || '伺服器拒絕了這筆送出，請確認資料後再試一次。');
+    }
+
+  } catch(err){
+    console.error('報名表送出失敗：', err);
+    showBanner('error', '❌ 送出失敗：' + err.message + '，請檢查網路連線後再試一次。');
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = originalBtnText;
+  }
 });
 </script>
 
